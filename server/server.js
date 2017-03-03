@@ -13,8 +13,8 @@ const app = new Koa();
 app.use(logger());
 app.use(bodyParser());
 
-// for every one
-app.use(mount('/public', normal));
+// for everymount one
+app.use(('/public', normal));
 
 // someone want to login  here
 app.use(mount('/authenticate', auth.authenticate()));

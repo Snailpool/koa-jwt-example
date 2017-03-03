@@ -4,19 +4,24 @@ import config from '../config/index';
 // check if this user has right
 function authenticate(){
 	return async function authenticate(ctx, next){
-		const user = ctx.request.body;
+		if(ctx.method === 'post'){
+			const user = ctx.request.body;
 
-		// should replace with encrypt/crypt and db identity verify method.
-		if(user.name === 'dodo' && user.password === 'abcde'){
-			const payload = {
-				userid: 1
-			};
-			ctx.body = {
-				token: jwt.sign(payload, config.secret)
-			};
+			// should replace with encrypt/crypt and db identity verify method.
+			if(user.name === 'dodo' && user.password === 'abcde'){
+				const payload = {
+					userid: 1
+				};
+				ctx.body = {
+					token: jwt.sign(payload, config.secret)
+				};
+			}
+			else{
+				ctx.throw(401, 'You are not the one !');
+			}
 		}
 		else{
-			ctx.throw(401, 'You are not the one !');
+			ctx.throw(405, 'Method not allowed !');
 		}
 		await next();
 	}
